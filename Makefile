@@ -15,3 +15,7 @@ start:
 
 render-start:
 	gunicorn task_manager.wsgi
+
+build:
+	./build.sh
+#uv sync --frozen && uv cache prune --ci
