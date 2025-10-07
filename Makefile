@@ -19,3 +19,7 @@ render-start:
 build:
 	./build.sh
 #uv sync --frozen && uv cache prune --ci
+
+collectstatic:
+
+migrate:
