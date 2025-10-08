@@ -23,3 +23,4 @@ build:
 collectstatic:
 
 migrate:
+	uv run manage.py makemigrations
