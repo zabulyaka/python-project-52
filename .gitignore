@@ -9,3 +9,4 @@ coverage.xml
 *.cast
 .env
 test.html
+*.sqlite3

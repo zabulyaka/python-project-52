@@ -16,7 +16,7 @@
         <div id="navbarToggleExternalContent" class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="">Пользователи</a>
+                    <a class="nav-link" href="{% url 'users_show' %}">Пользователи</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
@@ -24,15 +24,15 @@
                     <a class="nav-link" href="">Вход</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Регистрация</a>
+                    <a class="nav-link" href="{% url 'user_create' %}">Регистрация</a>
                 </li>
             </ul>
         </div>
     </nav>
-    {% block main %}
-    <main>
-    </main>
-    {% endblock %}
+    <div class="container wrapper flex-grow-1">
+        {% block main %}
+        {% endblock %}
+    </div>
     <footer>
         <div class="container my-5 pt-4 border-top">
             <a href="https://ru.hexlet.io/" target="_blank">Hexlet</a>

@@ -18,9 +18,7 @@ class UsersView(View):
         return render(
             request,
             'users/show.html',
-            context={
-                'users': users
-            },
+            {'users': users},
         )
 
 
@@ -39,7 +37,7 @@ class UserViewCreate(View):
             user = User(
                 first_name=form.cleaned_data['first_name'],
                 last_name=form.cleaned_data['last_name'],
-                nickname=form.cleaned_data['nickname'],
+                username=form.cleaned_data['username'],
             )
             user.save()
             return redirect('users_show')
