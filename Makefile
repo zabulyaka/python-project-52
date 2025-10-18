@@ -23,4 +23,10 @@ build:
 collectstatic:
 
 migrate:
+	uv run manage.py migrate --run-syncdb
+
+migrations:
 	uv run manage.py makemigrations
+
+purge:
+	uv run manage.py flush

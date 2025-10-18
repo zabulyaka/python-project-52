@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <div class="container wrapper flex-grow-1">
+        <h1 class="my-4">Регистрация</h1>
+        <form action="{% url 'user_create' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input class="btn btn-primary" type="submit" value="Зарегистрировать">
+        </form>
+    </div>
+{% endblock %}

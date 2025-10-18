@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block main %}
+    <h1 class="my-4">Изменения пользователя</h1>
+    <form action="{% url 'user_update' id=user_id %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input class="btn btn-primary" type="submit" valus="Изменить">
+    </form>
+{% endblock %}
