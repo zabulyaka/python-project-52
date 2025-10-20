@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.views import View
+from django.contrib.auth.views import LoginView, LogoutView
 
 from task_manager.users.forms import UserForm
 from task_manager.users.models import User
@@ -40,7 +41,7 @@ class UserViewCreate(View):
                 username=form.cleaned_data['username'],
             )
             user.save()
-            return redirect('users_show')
+            return redirect('user_login')
         return render(
             request,
             'users/create.html',
@@ -86,3 +87,11 @@ class UserViewDelete(View):
         if user:
             user.delete()
         return redirect('users_show')
+
+class UserViewLogin(LoginView):
+    template_name = 'users/login.html'
+    
+
+class UserViewLogout(LogoutView):
+    pass
+
