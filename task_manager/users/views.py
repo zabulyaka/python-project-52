@@ -1,9 +1,11 @@
 from django.shortcuts import redirect, render
 from django.views import View
+from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+#from django.contrib.auth import login
 
 from task_manager.users.forms import UserFormCreate, UserFormUpdate
 #from django.contrib.auth.forms import AuthenticationForm
@@ -28,32 +30,58 @@ class UsersView(View):
 
 
 class UserViewCreate(CreateView):
-#    model = User
+    model = User
 #    fields = ['first_name', 'last_name', 'username', 'password1', 'password2']
 #    template_name_suffix = '_create'
     template_name = 'users/user_create.html'
-    success_url = reverse_lazy('users_show')
+    success_url = reverse_lazy('user_login')
     form_class = UserFormCreate
     redirect_authenticated_user = True
 
     def form_valid(self, form):
         user = form.save()
-        if user is not None:
-            login(self.request, user)
+        messages.success(self.request, 'Пользователь успешно зарегистрирован')
+#        if user is not None:
+#            login(self.request, user)
         return super().form_valid(form)
 
-class UserViewUpdate(UpdateView):
+class UserViewUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = User
-    fields = ['first_name', 'last_name', 'username']
-    template_name_suffix = '_update'
+#    fields = ['first_name', 'last_name', 'username']
+#    template_name_suffix = '_update'
+#    success_url = reverse_lazy('users_show')
+    template_name = 'users/user_update.html'
     success_url = reverse_lazy('users_show')
+    form_class = UserFormUpdate
+    login_url = reverse_lazy('user_login')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Редактирование пользователя прошло успешно')
+        return super().form_valid(form)
+
+    def test_func(self):
+        user = self.get_object()
+        return self.request.user == user
+    
+    def handle_no_permission(self):
+        messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+        return redirect('user_login')
+
     
 
-class UserViewDelete(DeleteView):
+class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = User
     fields = ['username']
-    template_name_suffix = '_delete'
+#    template_name_suffix = '_delete'
+    template_name = 'users/user_delete.html'
     success_url = reverse_lazy('users_show')
+
+    def test_func(self):
+        user = self.get_object()
+        return self.request.user == user
+
+    def handle_no_permission(self):
+        return redirect('user_login')
 #class UserViewCreate(View):
 #    def get(self, request, *args, **kwargs):
 #        form = UserForm()

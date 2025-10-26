@@ -22,7 +22,11 @@ class UserFormUpdate(UserChangeForm):
         fields = [
             "first_name",
             "last_name",
-            "username"
+            "username",
         ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.pop('password')
 #class UserFormLogin(AuthenticationForm):
 #    pass

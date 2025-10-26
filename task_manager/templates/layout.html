@@ -1,3 +1,5 @@
+{% load django_bootstrap5 %}
+
 <!DOCTYPE html>
 <html lang="ru-ru">
 <head>
@@ -39,6 +41,7 @@
         </div>
     </nav>
     <div class="container wrapper flex-grow-1">
+        {% bootstrap_messages %}
         {% block main %}
         {% endblock %}
     </div>
