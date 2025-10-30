@@ -39,7 +39,7 @@ class UserViewCreate(CreateView):
     redirect_authenticated_user = True
 
     def form_valid(self, form):
-        user = form.save()
+#        user = form.save()
         messages.success(self.request, 'Пользователь успешно зарегистрирован')
 #        if user is not None:
 #            login(self.request, user)
@@ -76,11 +76,16 @@ class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'users/user_delete.html'
     success_url = reverse_lazy('users_show')
 
+    def form_valid(self, form):
+        messages.success(self.request, 'Удаление пользователя прошло успешно')
+        return super().form_valid(form)
+
     def test_func(self):
         user = self.get_object()
         return self.request.user == user
 
     def handle_no_permission(self):
+        messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
         return redirect('user_login')
 #class UserViewCreate(View):
 #    def get(self, request, *args, **kwargs):
