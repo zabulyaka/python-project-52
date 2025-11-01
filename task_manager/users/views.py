@@ -1,13 +1,14 @@
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib import messages
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-#from django.contrib.auth import login
+from django.contrib.auth import login
 
-from task_manager.users.forms import UserFormCreate, UserFormUpdate
+from task_manager.users.forms import UserFormCreate, UserFormUpdate, UserFormLogin
 #from django.contrib.auth.forms import AuthenticationForm
 from task_manager.users.models import User
 
@@ -56,7 +57,24 @@ class UserViewUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     login_url = reverse_lazy('user_login')
     
     def form_valid(self, form):
-        messages.success(self.request, 'Редактирование пользователя прошло успешно')
+        user = form.save()
+        if user is not None:
+            password = form.cleaned_data.get('password1', None)
+            password_confirm = form.cleaned_data.get('password2', None)
+            if password is not None and password == password_confirm:
+                try: 
+                    validate_password(password)
+                    user.set_password(password)
+                    messages.success(self.request, 'Редактирование пользователя прошло успешно')
+                except:
+                    messages.error(self.request, 'Пароль не удовлетворяет требованиям')
+                    return redirect('user_update', user.id)
+                finally:
+                    login(self.request, user)
+            else:
+                messages.error(self.request, 'Пароли не совпадают, либо отсутствуют')
+                return redirect('user_update', user.id)
+#        messages.success(self.request, 'Редактирование пользователя прошло успешно')
         return super().form_valid(form)
 
     def test_func(self):
@@ -64,8 +82,12 @@ class UserViewUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return self.request.user == user
     
     def handle_no_permission(self):
-        messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
-        return redirect('user_login')
+        if self.request.user.is_authenticated:
+            messages.error(self.request, 'У вас нет прав для изменения другого пользователя.')
+            return redirect('users_show')
+        else:
+            messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+            return redirect('user_login')
 
     
 
@@ -85,8 +107,12 @@ class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == user
 
     def handle_no_permission(self):
-        messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
-        return redirect('user_login')
+        if self.request.user.is_authenticated:
+            messages.error(self.request, 'У вас нет прав для изменения другого пользователя.')
+            return redirect('users_show')
+        else:
+            messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+            return redirect('user_login')
 #class UserViewCreate(View):
 #    def get(self, request, *args, **kwargs):
 #        form = UserForm()
@@ -154,8 +180,16 @@ class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class UserViewLogin(LoginView):
     template_name = 'users/user_login.html'
+    form_class = UserFormLogin
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Вы залогинены')
+        return super().form_valid(form)
     
 
 class UserViewLogout(LogoutView):
-    pass
+    def dispatch(self, request, *args, **kwargs):
+        messages.info(self.request, 'Вы разлогинены')
+        return super().dispatch(request, *args, **kwargs)
+    
 

@@ -1,11 +1,24 @@
 # from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django import forms
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 
 from task_manager.users.models import User
 
 
 # class UserForm(ModelForm):
 class UserFormCreate(UserCreationForm):
+    password1 = forms.CharField(
+        label='Пароль',
+        help_text='Ваш пароль должен содержать как минимум 3 символа.',
+        widget=forms.PasswordInput,
+        initial=''
+    )
+    password2 = forms.CharField(
+        label='Подтверждение пароля',
+        help_text='Для подтверждения введите, пожалуйста, пароль ещё раз.',
+        widget=forms.PasswordInput,
+        initial=''
+    )
     class Meta:
         model = User
         fields = [
@@ -17,6 +30,18 @@ class UserFormCreate(UserCreationForm):
         ]
 
 class UserFormUpdate(UserChangeForm):
+    password1 = forms.CharField(
+        label='Пароль',
+        help_text='Ваш пароль должен содержать как минимум 3 символа.',
+        widget=forms.PasswordInput,
+        initial=''
+    )
+    password2 = forms.CharField(
+        label='Подтверждение пароля',
+        help_text='Для подтверждения введите, пожалуйста, пароль ещё раз.',
+        widget=forms.PasswordInput,
+        initial=''
+    )
     class Meta:
         model = User
         fields = [
@@ -30,5 +55,7 @@ class UserFormUpdate(UserChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields.pop('password')
-#class UserFormLogin(AuthenticationForm):
-#    pass
+
+class UserFormLogin(AuthenticationForm):
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
+
