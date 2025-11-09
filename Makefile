@@ -30,3 +30,6 @@ migrations:
 
 purge:
 	uv run manage.py flush
+
+test:
+	uv run manage.py test task_manager/users
