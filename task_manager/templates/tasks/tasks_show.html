@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% load django_bootstrap5 %}
+
+{% block main %}
+    <h1 class="my-4">Задачи</h1>
+    <a class="btn btn-primary mb-3" href="{% url 'task_create' %}" role="button">Создать задачу</a>
+    <div class="card mb-3">
+        <div class="card-body bg-light">
+            <form class="form-inline center" method="get">
+                {% bootstrap_field filter.form.status show_label=True %}
+                {% bootstrap_field filter.form.executor show_label=True %}
+                {% bootstrap_field filter.form.labels show_label=True %}                
+            </form>
+        </div>
+    </div>
+{% endblock %}

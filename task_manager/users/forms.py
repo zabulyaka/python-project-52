@@ -56,20 +56,21 @@ class UserFormUpdate(UserChangeForm):
     def clean(self):
         cleaned_data = super().clean()
         password1 = cleaned_data.get('password1')
-        try:
-            validate_password(password1)
-        except ValidationError:
-            self.add_error('password1','Пароль не удовлетворяет требованиям')
+        if password1:
+            try:
+                validate_password(password1)
+            except ValidationError:
+                self.add_error('password1','Пароль не удовлетворяет требованиям')
         password2 = cleaned_data.get('password2')
         if password1 and password2 and password2 != password1:
-            self.add_error('password2', 'Пароли не совпадают')`
+            self.add_error('password2', 'Пароли не совпадают')
         return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
         password = self.cleaned_data.get('password1')
         user.set_password(password)
-        password_changed(password)
+        password_changed(password, self.instance)
         if commit:
             user.save()
         return user

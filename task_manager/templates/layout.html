@@ -23,6 +23,9 @@
             </ul>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
+                <li class='nav-item'>
+                    <a class="nav-link" href="{% url 'statuses_show' %}">Статусы</a>
+                </li>
                 <li class="nav-item">
                     <form action="{% url 'user_logout' %}" method="post">
                         {% csrf_token %}
