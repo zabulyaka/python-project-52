@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'task_manager.homepage',
     'task_manager.users',
     'task_manager.statuses',
+    'task_manager.labels',
+    'task_manager.tasks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -91,7 +93,9 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 
 DATABASE_URL = os.getenv('DATABASE_URL')
 #DATABASES = {
-if DEBUG:
+#if DEBUG and 'localhost' in DATABASE_URL:
+#if not DATABASE_URL:
+if DEBUG and not DATABASE_URL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

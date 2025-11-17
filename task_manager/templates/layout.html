@@ -26,6 +26,12 @@
                 <li class='nav-item'>
                     <a class="nav-link" href="{% url 'statuses_show' %}">Статусы</a>
                 </li>
+                <li class='nav-item'>
+                    <a class="nav-link" href="{% url 'labels_show' %}">Метки</a>
+                </li>
+                <li class='nav-item'>
+                    <a class="nav-link" href="{% url 'tasks_show' %}">Задачи</a>
+                </li>
                 <li class="nav-item">
                     <form action="{% url 'user_logout' %}" method="post">
                         {% csrf_token %}

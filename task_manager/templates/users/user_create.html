@@ -8,4 +8,14 @@
         {% bootstrap_form form %}
         <input class="btn btn-primary" type="submit" value="Зарегистрировать">
     </form>
+    {% if form.password1.errors %}
+    {% for error in form.password1.errors %}
+        <p>{{ error }}</p>
+    {% endfor %}
+    {% endif %}
+    {% if form.password2.errors %}
+    {% for error in form.password2.errors %}
+        <p>{{ error }}</p>
+    {% endfor %}
+    {% endif %}
 {% endblock %}
