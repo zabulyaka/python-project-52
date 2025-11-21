@@ -4,21 +4,32 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django_filters.views import FilterView
 
-from task_manager.tasks.forms import TaskForm
+from task_manager.tasks.forms import TaskForm, TaskFilter
 from task_manager.tasks.models import Task
 
 
-class TasksView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        tasks = Task.objects.all()
-        url = 'tasks/tasks_show.html'
-        context = {'tasks': tasks}
-        return render(request, url, context)
+class TasksView(LoginRequiredMixin, FilterView):
+    model = Task
+    form = TaskFilter
+    template_name = 'tasks/tasks_show.html'
+#    template_name = 'tasks/task_filter.html'
+    context_object_name = 'tasks'
 
     def handle_no_permission(self):
         messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
         return redirect('user_login')
+#class TasksView(LoginRequiredMixin, View):
+#    def get(self, request, *args, **kwargs):
+#        tasks = Task.objects.all()
+#        url = 'tasks/tasks_show.html'
+#        context = {'tasks': tasks}
+#        return render(request, url, context)
+
+#    def handle_no_permission(self):
+#        messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+#        return redirect('user_login')
 
 class TaskView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):

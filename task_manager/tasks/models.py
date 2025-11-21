@@ -4,6 +4,7 @@ from task_manager.users.models import User
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 
+
 class Task(models.Model):
     name = models.CharField(max_length=150, verbose_name='Имя', unique=True)
     description = models.TextField(max_length=300, verbose_name='Описание', blank=True)
@@ -15,4 +16,6 @@ class Task(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+
 # Create your models here.

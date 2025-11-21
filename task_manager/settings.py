@@ -42,6 +42,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 
 INSTALLED_APPS = [
     'django_bootstrap5',
+    'django_filters',
     'task_manager',
     'task_manager.homepage',
     'task_manager.users',
