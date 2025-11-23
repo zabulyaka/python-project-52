@@ -7,15 +7,7 @@
     <div class="card mb-3">
         <div class="card-body bg-light">
             <form class="form-inline center" method="get">
-                {% bootstrap_field filter.form.status %}
-                {% bootstrap_field filter.form.executor %}
-                {% bootstrap_field filter.form.labels %}
-                <div class="mb-3">
-                    <div class="form-check">
-                        <input id="id_self_tasks" class="form-check-input mr-3 is-valid" type="checkbox" name="self_tasks">
-                        <label class="form-check-label" for="id_self_tasks">Только свои задачи</label>
-                    </div>
-                </div>
+                {% bootstrap_form filter.form %}
                 <input class="btn btn-primary" type="submit" value="Показать">
             </form>
         </div>
