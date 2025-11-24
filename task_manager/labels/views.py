@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.db.models import ProtectedError
 
 from task_manager.labels.forms import LabelForm
 from task_manager.labels.models import Label
@@ -29,7 +30,7 @@ class LabelViewCreate(LoginRequiredMixin, CreateView):
     fields = ['name']
     
     def form_valid(self, form):
-        messages.success(self.request, 'Метка успешно создана')
+        messages.success(self.request, 'Метка успешно создана.')
         return super().form_valid(form)
 
     def handle_no_permission(self):
@@ -45,7 +46,7 @@ class LabelViewUpdate(LoginRequiredMixin, UpdateView):
     fields = ['name']
     
     def form_valid(self, form):
-        messages.success(self.request, 'Метка успешно изменена')
+        messages.success(self.request, 'Метка успешно изменена.')
         return super().form_valid(form)
 
     def handle_no_permission(self):
@@ -60,10 +61,18 @@ class LabelViewDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('labels_show')
     fields = ['name']
     
-    def form_valid(self, form):
-        messages.success(self.request, 'Метка успешно удалена')
-        return super().form_valid(form)
+#    def form_valid(self, form):
+#        messages.success(self.request, 'Метка успешно удалена')
+#        return super().form_valid(form)
 
     def handle_no_permission(self):
         messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
         return redirect('user_login')
+
+    def post(self, request, *args, **kwargs):
+        try:
+            messages.success(self.request, 'Метка успешно удалена.')
+            return super().post(request, *args, **kwargs)
+        except ProtectedError:
+            messages.error(self.request, 'Вы не можете удалить используемую метку.')
+            return redirect(self.success_url)

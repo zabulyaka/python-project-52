@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.db.models import ProtectedError
 
 from task_manager.statuses.forms import StatusForm
 from task_manager.statuses.models import Status
@@ -29,7 +30,7 @@ class StatusViewCreate(LoginRequiredMixin, CreateView):
     fields = ['name']
     
     def form_valid(self, form):
-        messages.success(self.request, 'Статус успешно создан')
+        messages.success(self.request, 'Статус успешно создан.')
         return super().form_valid(form)
 
     def handle_no_permission(self):
@@ -45,7 +46,7 @@ class StatusViewUpdate(LoginRequiredMixin, UpdateView):
     fields = ['name']
     
     def form_valid(self, form):
-        messages.success(self.request, 'Статус успешно изменён')
+        messages.success(self.request, 'Статус успешно изменён.')
         return super().form_valid(form)
 
     def handle_no_permission(self):
@@ -60,13 +61,21 @@ class StatusViewDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('statuses_show')
     fields = ['name']
     
-    def form_valid(self, form):
-        messages.success(self.request, 'Статус успешно удалён')
-        return super().form_valid(form)
+#    def form_valid(self, form):
+#        messages.success(self.request, 'Статус успешно удалён')
+#        return super().form_valid(form)
 
     def handle_no_permission(self):
         messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
         return redirect('user_login')
+
+    def post(self, request, *args, **kwargs):
+        try:
+            messages.success(self.request, 'Статус успешно удалён.')
+            return super().post(request, *args, **kwargs)
+        except ProtectedError:
+            messages.error(self.request, 'Вы не можете удалить используемый статус.')
+            return redirect(self.success_url)
 #class StatusViewCreate(LoginRequiredMixin, View):
 #    def get(self, request, *args, **kwargs):
 #        form = StatusForm()

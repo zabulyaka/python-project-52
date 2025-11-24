@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django_filters.views import FilterView
@@ -76,7 +76,7 @@ class TaskViewUpdate(LoginRequiredMixin, UpdateView):
         return redirect('user_login')
 
 
-class TaskViewDelete(LoginRequiredMixin, DeleteView):
+class TaskViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Task
     form = TaskForm
     template_name = 'tasks/task_delete.html'
@@ -86,7 +86,15 @@ class TaskViewDelete(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, 'Задача успешно удалена')
         return super().form_valid(form)
+    
+    def test_func(self):
+        task = self.get_object()
+        return self.request.user == task.author
 
     def handle_no_permission(self):
-        messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
-        return redirect('user_login')
+        if self.request.user.is_authenticated:
+            messages.error(self.request, 'Вы не можете удалить задачу, созданную другим пользователем.')
+            return redirect('tasks_show')
+        else:
+            messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
+            return redirect('user_login')

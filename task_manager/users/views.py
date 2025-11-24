@@ -5,6 +5,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import ProtectedError
 
 from task_manager.users.forms import UserFormCreate, UserFormUpdate, UserFormLogin
 from task_manager.users.models import User
@@ -62,9 +63,9 @@ class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'users/user_delete.html'
     success_url = reverse_lazy('users_show')
 
-    def form_valid(self, form):
-        messages.success(self.request, 'Удаление пользователя прошло успешно')
-        return super().form_valid(form)
+#    def form_valid(self, form):
+#        messages.success(self.request, 'Удаление пользователя прошло успешно')
+#        return super().form_valid(form)
 
     def test_func(self):
         user = self.get_object()
@@ -78,19 +79,28 @@ class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             messages.error(self.request, 'Вы не авторизованы! Пожалуйста, выполните вход.')
             return redirect('user_login')
 
+    def post(self, request, *args, **kwargs):
+        try:
+            messages.success(self.request, 'Удаление пользователя прошло успешно.')
+            return super().post(request, *args, **kwargs)
+        except ProtectedError:
+            messages.error(self.request, 'Вы не можете удалить используемого пользователя.')
+            return redirect(self.success_url)
+
+
 
 class UserViewLogin(LoginView):
     template_name = 'users/user_login.html'
     form_class = UserFormLogin
 
     def form_valid(self, form):
-        messages.success(self.request, 'Вы залогинены')
+        messages.success(self.request, 'Вы залогинены.')
         return super().form_valid(form)
     
 
 class UserViewLogout(LogoutView):
     def dispatch(self, request, *args, **kwargs):
-        messages.info(self.request, 'Вы разлогинены')
+        messages.info(self.request, 'Вы разлогинены.')
         return super().dispatch(request, *args, **kwargs)
     
 
