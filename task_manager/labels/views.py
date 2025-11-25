@@ -85,6 +85,9 @@ class LabelViewDelete(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         try:
+            self.object = self.get_object()
+            if self.object.tasks.exists():
+                raise ProtectedError('Label is being used', self.object)
             result = super().post(request, *args, **kwargs)
             messages.success(
                 self.request,
