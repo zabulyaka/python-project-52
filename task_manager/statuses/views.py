@@ -90,7 +90,6 @@ class StatusViewDelete(LoginRequiredMixin, DeleteView):
                 self.request,
                 'Статус успешно удален'
             )
-#            return super().post(request, *args, **kwargs)
             return result
         except ProtectedError:
             messages.error(

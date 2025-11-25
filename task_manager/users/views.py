@@ -107,7 +107,6 @@ class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
                 'Пользователь успешно удален'
             )
             return result
-#            return super().post(request, *args, **kwargs)
         except ProtectedError:
             messages.error(
                 self.request,

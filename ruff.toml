@@ -8,7 +8,7 @@ line-length = 80
 "task_manager/statuses/migrations/*" = ["E", "F", "I", "C90"]
 "task_manager/labels/migrations/*" = ["E", "F", "I", "C90"]
 "task_manager/tasks/migrations/*" = ["E", "F", "I", "C90"]
-"models.py" = ["E", "F", "I", "C90"]
+# "models.py" = ["E", "F", "I", "C90"]
 
 [lint]
 preview = true
