@@ -20,7 +20,7 @@ class TaskFilter(FilterSet):
         queryset=User.objects.all(),
         label='Исполнитель'
     )
-    labels = ModelChoiceFilter(queryset=Label.objects.all(), label='Метки')
+    labels = ModelChoiceFilter(queryset=Label.objects.all(), label='Метка')
     own_tasks = BooleanFilter(
         method='filter_own_tasks',
         label='Только свои задачи',
