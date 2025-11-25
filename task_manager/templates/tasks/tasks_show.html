@@ -31,10 +31,10 @@
                 <td>{{ task.id }}</td>
                 <td><a href="{% url 'task_show' task.pk %}">{{ task.name }}</a></td>
                 <td>{{ task.status.name }}</td>
-                <td>{{ task.author.get_full_name }}</td>
+                <td>{{ task.author.full_name }}</td>
                 <td>
                 {% if task.executor %}
-                    {{ task.executor.get_full_name }}
+                    {{ task.executor.full_name }}
                 {% endif %}
                 </td>
                 <td>{{ task.created_at }}</td>

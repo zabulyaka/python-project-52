@@ -37,6 +37,7 @@ class UserViewCreate(CreateView):
             self.request,
             'Пользователь успешно зарегистрирован'
         )
+        form.instance.full_name = form.instance.get_full_name()
         return super().form_valid(form)
 
 
@@ -52,6 +53,7 @@ class UserViewUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             self.request,
             'Пользователь успешно изменен'
         )
+        form.instance.full_name = form.instance.get_full_name()
         return super().form_valid(form)
 
     def test_func(self):
