@@ -93,9 +93,7 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 
 
 DATABASE_URL = os.getenv('DATABASE_URL')
-#DATABASES = {
-#if DEBUG and 'localhost' in DATABASE_URL:
-#if not DATABASE_URL:
+
 if DEBUG and not DATABASE_URL:
     DATABASES = {
         'default': {
@@ -110,11 +108,6 @@ else:
             conn_max_age=600
         )
     }
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
 
 
 # Password validation
@@ -153,7 +146,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-#STATIC_URL = 'static/'
 
 STATIC_URL = '/static/'
 

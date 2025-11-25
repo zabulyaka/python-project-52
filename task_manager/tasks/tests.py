@@ -1,8 +1,10 @@
-from task_manager.users.models import User
-from task_manager.tasks.models import Task
-from task_manager.statuses.models import Status
 from django.test import TestCase
 from django.urls import reverse_lazy
+
+from task_manager.statuses.models import Status
+from task_manager.tasks.models import Task
+from task_manager.users.models import User
+
 
 class TaskTestCase(TestCase):
     fixtures = ['tasks.json']
@@ -69,7 +71,6 @@ class TaskTestCase(TestCase):
 
     def test_task_update_with_auth(self):
         new_data = self.test_data
-        user = self.get_test_user()
         task = self.get_test_task()
 
         self.client.login(username='nickname1', password='djangohexlet1')
@@ -103,7 +104,6 @@ class TaskTestCase(TestCase):
         self.client.logout()        
         
     def test_task_delete_with_auth(self):
-        user = self.get_test_user()
         task = self.get_test_task()
 
         self.client.login(username='nickname1', password='djangohexlet1')

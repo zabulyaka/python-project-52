@@ -1,6 +1,8 @@
-from task_manager.users.models import User
 from django.test import TestCase
 from django.urls import reverse_lazy
+
+from task_manager.users.models import User
+
 
 class UserTestCase(TestCase):
     fixtures = ['users.json']

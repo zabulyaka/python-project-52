@@ -1,7 +1,9 @@
-from task_manager.users.models import User
-from task_manager.labels.models import Label
 from django.test import TestCase
 from django.urls import reverse_lazy
+
+from task_manager.labels.models import Label
+from task_manager.users.models import User
+
 
 class LabelTestCase(TestCase):
     fixtures = ['labels.json']
@@ -65,7 +67,6 @@ class LabelTestCase(TestCase):
 
     def test_label_update_with_auth(self):
         new_data = self.test_data
-        user = self.get_test_user()
         label = self.get_test_label()
 
         self.client.login(username='nickname3', password='djangohexlet3')
@@ -99,7 +100,6 @@ class LabelTestCase(TestCase):
         self.client.logout()        
         
     def test_label_delete_with_auth(self):
-        user = self.get_test_user()
         label = self.get_test_label()
 
         self.client.login(username='nickname3', password='djangohexlet3')

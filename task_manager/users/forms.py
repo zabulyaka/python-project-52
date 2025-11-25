@@ -1,7 +1,14 @@
-from django.contrib.auth.password_validation import validate_password, password_changed
-from django.core.exceptions import ValidationError
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    UserChangeForm,
+    UserCreationForm,
+)
+from django.contrib.auth.password_validation import (
+    password_changed,
+    validate_password,
+)
+from django.core.exceptions import ValidationError
 
 from task_manager.users.models import User
 
@@ -60,7 +67,10 @@ class UserFormUpdate(UserChangeForm):
             try:
                 validate_password(password1)
             except ValidationError:
-                self.add_error('password1','Пароль не удовлетворяет требованиям')
+                self.add_error(
+                    'password1',
+                    'Пароль не удовлетворяет требованиям'
+                )
         password2 = cleaned_data.get('password2')
         if password1 and password2 and password2 != password1:
             self.add_error('password2', 'Пароли не совпадают')
