@@ -48,7 +48,7 @@ class TaskViewCreate(LoginRequiredMixin, CreateView):
     form = TaskForm
     template_name = 'tasks/task_create.html'
     success_url = reverse_lazy('tasks_show')
-    fields = ['name', 'description', 'executor', 'status', 'labels']
+    fields = ['name', 'description', 'status', 'executor', 'labels']
     
     def form_valid(self, form):
         messages.success(self.request, 'Задача успешно создана')
@@ -65,7 +65,7 @@ class TaskViewUpdate(LoginRequiredMixin, UpdateView):
     form = TaskForm
     template_name = 'tasks/task_update.html'
     success_url = reverse_lazy('tasks_show')
-    fields = ['name', 'description', 'executor', 'status', 'labels']
+    fields = ['name', 'description', 'status', 'executor', 'labels']
     
     def form_valid(self, form):
         messages.success(self.request, 'Задача успешно изменена')
