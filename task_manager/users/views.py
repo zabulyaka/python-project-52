@@ -101,15 +101,17 @@ class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         try:
+            result = super().post(request, *args, **kwargs)
             messages.success(
                 self.request,
                 'Пользователь успешно удален'
             )
-            return super().post(request, *args, **kwargs)
+            return result
+#            return super().post(request, *args, **kwargs)
         except ProtectedError:
             messages.error(
                 self.request,
-                'Вы не можете удалить используемого пользователя.'
+                'Невозможно удалить пользователя, используемого в задаче.'
             )
             return redirect(self.success_url)
 

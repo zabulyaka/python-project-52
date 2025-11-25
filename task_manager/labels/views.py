@@ -85,11 +85,13 @@ class LabelViewDelete(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         try:
+            result = super().post(request, *args, **kwargs)
             messages.success(
                 self.request,
                 'Метка успешно удалена'
             )
-            return super().post(request, *args, **kwargs)
+            return result
+#            return super().post(request, *args, **kwargs)
         except ProtectedError:
             messages.error(
                 self.request,
