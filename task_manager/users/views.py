@@ -89,7 +89,7 @@ class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user.is_authenticated:
             messages.error(
                 self.request,
-                'У вас нет прав для удаления другого пользователя.'
+                'У вас нет прав для изменения другого пользователя.'
             )
             return redirect('users_show')
         else:
