@@ -30,7 +30,7 @@ class StatusViewCreate(LoginRequiredMixin, CreateView):
     fields = ['name']
     
     def form_valid(self, form):
-        messages.success(self.request, 'Статус успешно создан.')
+        messages.success(self.request, 'Статус успешно создан')
         return super().form_valid(form)
 
     def handle_no_permission(self):
@@ -46,7 +46,7 @@ class StatusViewUpdate(LoginRequiredMixin, UpdateView):
     fields = ['name']
     
     def form_valid(self, form):
-        messages.success(self.request, 'Статус успешно изменён.')
+        messages.success(self.request, 'Статус успешно изменен')
         return super().form_valid(form)
 
     def handle_no_permission(self):
@@ -71,7 +71,7 @@ class StatusViewDelete(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         try:
-            messages.success(self.request, 'Статус успешно удалён.')
+            messages.success(self.request, 'Статус успешно удален')
             return super().post(request, *args, **kwargs)
         except ProtectedError:
             messages.error(self.request, 'Вы не можете удалить используемый статус.')

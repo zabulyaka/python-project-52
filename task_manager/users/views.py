@@ -41,7 +41,7 @@ class UserViewUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     login_url = reverse_lazy('user_login')
     
     def form_valid(self, form):
-        messages.success(self.request, 'Редактирование пользователя прошло успешно')
+        messages.success(self.request, 'Пользователь успешно изменен')
         return super().form_valid(form)
 
     def test_func(self):
@@ -81,7 +81,7 @@ class UserViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         try:
-            messages.success(self.request, 'Удаление пользователя прошло успешно.')
+            messages.success(self.request, 'Пользователь успешно удален')
             return super().post(request, *args, **kwargs)
         except ProtectedError:
             messages.error(self.request, 'Вы не можете удалить используемого пользователя.')
