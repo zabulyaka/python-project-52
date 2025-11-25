@@ -106,7 +106,7 @@ class TaskViewDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user.is_authenticated:
             messages.error(
                 self.request,
-                'Вы не можете удалить задачу, созданную другим пользователем.'
+                'Задачу может удалить только ее автор.'
             )
             return redirect('tasks_show')
         else:
