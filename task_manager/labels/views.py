@@ -93,6 +93,6 @@ class LabelViewDelete(LoginRequiredMixin, DeleteView):
         except ProtectedError:
             messages.error(
                 self.request,
-                'Вы не можете удалить используемую метку.'
+                'Невозможно удалить метку, используемую в задаче.'
             )
             return redirect(self.success_url)

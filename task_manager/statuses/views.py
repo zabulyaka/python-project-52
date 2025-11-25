@@ -93,7 +93,7 @@ class StatusViewDelete(LoginRequiredMixin, DeleteView):
         except ProtectedError:
             messages.error(
                 self.request,
-                'Вы не можете удалить используемый статус.'
+                'Невозможно удалить статус, используемый в задаче.'
             )
             return redirect(self.success_url)
 
