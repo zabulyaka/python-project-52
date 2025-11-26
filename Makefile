@@ -33,3 +33,8 @@ purge:
 
 test:
 	uv run manage.py test task_manager
+
+coverage:
+	uv run coverage run manage.py test task_manager
+	uv run coverage xml
+	uv run coverage report
