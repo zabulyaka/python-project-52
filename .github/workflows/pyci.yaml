@@ -12,7 +12,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
         # make depends on uv
       - name: Install dependencies
         run: |
@@ -22,3 +22,13 @@ jobs:
         run: |
           make lint
           make test
+      - name: SonarQubeScan
+        uses: sonarsource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+        with:
+          args: >
+            -Dsonar.projectKey=zabulyaka_python-project-52
+            -Dsonar.organization=zabulyaka
+            -Dsonar.python.coverage.reportPaths=coverage.xml
