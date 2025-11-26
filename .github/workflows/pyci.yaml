@@ -22,11 +22,3 @@ jobs:
         run: |
           make lint
           make test
-      - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v9.0.0
-        if: github.ref_name == 'master'
-        env:
-          CC_TEST_REPORTER_ID: d2c7127a91d15cb8075d60c31cb469ce342676270022ac7299224cd758b1d1cb
-        with:
-          coverageCommand: make test-coverage
-          debug: true
