@@ -23,7 +23,7 @@ jobs:
           make lint
           make test
       - name: SonarQubeScan
-        uses: sonarsource/sonarqube-scan-action@v6
+        uses: sonarsource/sonarqube-scan-action@a7832fab7641751ad615160833c437b1f5df38b1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
